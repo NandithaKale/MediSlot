@@ -6,7 +6,6 @@
     <title>MediSlot - API Playground</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Segoe UI', sans-serif;
             background: #0d0d1a;
@@ -14,8 +13,6 @@
             display: flex;
             min-height: 100vh;
         }
-
-        /* Sidebar */
         .sidebar {
             width: 260px;
             min-height: 100vh;
@@ -26,7 +23,6 @@
             top: 0; left: 0;
             overflow-y: auto;
         }
-
         .logo {
             display: flex;
             align-items: center;
@@ -43,7 +39,6 @@
         }
         .logo-name { font-size: 1.2rem; font-weight: 700; }
         .logo-name span { color: #a78bfa; }
-
         .section-label {
             font-size: 0.65rem;
             text-transform: uppercase;
@@ -52,7 +47,6 @@
             padding: 0 0.5rem;
             margin: 1.25rem 0 0.5rem;
         }
-
         .nav-btn {
             display: flex;
             align-items: center;
@@ -84,35 +78,22 @@
         }
         .tag-post { background: rgba(16,185,129,0.2); color: #6ee7b7; }
         .tag-get { background: rgba(59,130,246,0.2); color: #93c5fd; }
-        .tag-put { background: rgba(245,158,11,0.2); color: #fcd34d; }
-        .tag-delete { background: rgba(239,68,68,0.2); color: #fca5a5; }
-
-        /* Main */
         .main {
             margin-left: 260px;
             flex: 1;
             padding: 2rem;
             max-width: calc(100vw - 260px);
         }
-
         .page { display: none; }
         .page.active { display: block; }
-
-        /* Page Header */
         .page-header {
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid #2d1b4e;
         }
-        .page-header h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
+        .page-header h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem; }
         .page-header h2 span { color: #a78bfa; }
         .page-header p { color: #64748b; font-size: 0.85rem; }
-
-        /* Form Card */
         .form-card {
             background: #110826;
             border: 1px solid #2d1b4e;
@@ -124,11 +105,7 @@
             font-size: 0.9rem;
             color: #a78bfa;
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -136,7 +113,6 @@
             margin-bottom: 1rem;
         }
         .form-grid.single { grid-template-columns: 1fr; }
-
         .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
         .form-group label {
             font-size: 0.75rem;
@@ -154,11 +130,8 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .form-group input:focus, .form-group select:focus {
-            border-color: #8b5cf6;
-        }
+        .form-group input:focus, .form-group select:focus { border-color: #8b5cf6; }
         .form-group select option { background: #1a0533; }
-
         .submit-btn {
             background: linear-gradient(135deg, #8b5cf6, #ec4899);
             color: white;
@@ -169,14 +142,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
         .submit-btn:hover { opacity: 0.85; }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Response Box */
         .response-card {
             background: #0a0514;
             border: 1px solid #2d1b4e;
@@ -201,7 +169,6 @@
         .status-ok { background: rgba(16,185,129,0.2); color: #6ee7b7; }
         .status-err { background: rgba(239,68,68,0.2); color: #fca5a5; }
         .status-wait { background: rgba(139,92,246,0.2); color: #a78bfa; }
-
         .response-body {
             padding: 1rem;
             font-family: monospace;
@@ -212,8 +179,6 @@
             overflow-y: auto;
             min-height: 80px;
         }
-
-        /* Token Display */
         .token-display {
             background: #0a0514;
             border: 1px solid rgba(139,92,246,0.3);
@@ -227,8 +192,6 @@
             display: none;
         }
         .token-display.show { display: block; }
-
-        /* Info box */
         .info-box {
             background: rgba(139,92,246,0.08);
             border: 1px solid rgba(139,92,246,0.2);
@@ -239,8 +202,6 @@
             margin-bottom: 1rem;
             line-height: 1.6;
         }
-
-        /* Home page */
         .home-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -264,7 +225,6 @@
         .home-card .big-icon { font-size: 2rem; margin-bottom: 0.75rem; }
         .home-card h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
         .home-card p { font-size: 0.75rem; color: #64748b; }
-
         .welcome-banner {
             background: linear-gradient(135deg, #1a0533, #2d0a4e);
             border: 1px solid #4a1a7a;
@@ -283,32 +243,17 @@
         }
         .welcome-text p { color: #94a3b8; font-size: 0.9rem; line-height: 1.6; }
         .welcome-icon { font-size: 4rem; }
-
-        .spinner {
-            display: inline-block;
-            width: 14px; height: 14px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
     <div class="logo">
         <div class="logo-box">🏥</div>
         <div class="logo-name">Medi<span>Slot</span></div>
     </div>
-
     <div class="section-label">Getting Started</div>
-    <button class="nav-btn active" onclick="showPage('home', this)">
-        🏠 Home
-    </button>
-
+    <button class="nav-btn active" onclick="showPage('home', this)">🏠 Home</button>
     <div class="section-label">Authentication</div>
     <button class="nav-btn" onclick="showPage('register', this)">
         👤 Register User <span class="method-tag tag-post">POST</span>
@@ -316,12 +261,10 @@
     <button class="nav-btn" onclick="showPage('login', this)">
         🔐 Login <span class="method-tag tag-post">POST</span>
     </button>
-
     <div class="section-label">Doctors</div>
     <button class="nav-btn" onclick="showPage('doctors', this)">
         🩺 View All Doctors <span class="method-tag tag-get">GET</span>
     </button>
-
     <div class="section-label">Appointments</div>
     <button class="nav-btn" onclick="showPage('book', this)">
         📅 Book Appointment <span class="method-tag tag-post">POST</span>
@@ -331,7 +274,6 @@
     </button>
 </div>
 
-<!-- Main -->
 <div class="main">
 
     <!-- HOME -->
@@ -339,43 +281,41 @@
         <div class="welcome-banner">
             <div class="welcome-text">
                 <h1>Welcome to <span>MediSlot</span></h1>
-                <p>A Smart Doctor Appointment & Availability Management System.<br>
+                <p>Smart Doctor Appointment & Availability Management System.<br>
                 Use this playground to test all API endpoints interactively.</p>
             </div>
             <div class="welcome-icon">🏥</div>
         </div>
-
         <div class="home-grid">
-            <div class="home-card" onclick="showPage('register', document.querySelector('[onclick*=register]'))">
+            <div class="home-card" onclick="showPage('register', getBtn('register'))">
                 <div class="big-icon">👤</div>
                 <h3>Register</h3>
                 <p>Create a new patient or doctor account</p>
             </div>
-            <div class="home-card" onclick="showPage('login', document.querySelector('[onclick*=login]'))">
+            <div class="home-card" onclick="showPage('login', getBtn('login'))">
                 <div class="big-icon">🔐</div>
                 <h3>Login</h3>
                 <p>Authenticate and get your JWT token</p>
             </div>
-            <div class="home-card" onclick="showPage('doctors', document.querySelector('[onclick*=doctors]'))">
+            <div class="home-card" onclick="showPage('doctors', getBtn('doctors'))">
                 <div class="big-icon">🩺</div>
                 <h3>Doctors</h3>
                 <p>Browse all available doctors</p>
             </div>
-            <div class="home-card" onclick="showPage('book', document.querySelector('[onclick*=book]'))">
+            <div class="home-card" onclick="showPage('book', getBtn('book'))">
                 <div class="big-icon">📅</div>
                 <h3>Book Appointment</h3>
                 <p>Schedule a doctor appointment</p>
             </div>
-            <div class="home-card" onclick="showPage('myappointments', document.querySelector('[onclick*=myappointments]'))">
+            <div class="home-card" onclick="showPage('myappointments', getBtn('myappointments'))">
                 <div class="big-icon">📋</div>
                 <h3>My Appointments</h3>
                 <p>View your booked appointments</p>
             </div>
         </div>
-
         <div class="info-box">
             💡 <strong>How to use:</strong> Start by registering a user, then login to get your JWT token.
-            The token will be saved automatically and used for all protected requests!
+            The token is saved automatically and used for all protected requests!
         </div>
     </div>
 
@@ -413,9 +353,7 @@
                     </select>
                 </div>
             </div>
-            <button class="submit-btn" onclick="registerUser()">
-                <span>Send Request</span>
-            </button>
+            <button class="submit-btn" onclick="registerUser()">Send Request</button>
         </div>
         <div class="response-card">
             <div class="response-header">
@@ -444,9 +382,7 @@
                     <input type="password" id="login-password" placeholder="Your password">
                 </div>
             </div>
-            <button class="submit-btn" onclick="loginUser()">
-                <span>Send Request</span>
-            </button>
+            <button class="submit-btn" onclick="loginUser()">Send Request</button>
         </div>
         <div class="response-card">
             <div class="response-header">
@@ -456,7 +392,7 @@
             <div class="response-body" id="login-response">// Response will appear here</div>
         </div>
         <div class="token-display" id="token-display">
-            🔑 Token saved! Use this for protected requests:<br><br>
+            🔑 Token saved automatically for all requests!<br><br>
             <span id="token-value"></span>
         </div>
     </div>
@@ -468,20 +404,17 @@
             <p>GET /api/doctors — Requires JWT token</p>
         </div>
         <div class="info-box">
-            🔐 This endpoint requires authentication. Login first to get your token!
-            <br>Saved token: <span id="saved-token-preview" style="color:#c4b5fd">None</span>
+            🔐 Login first to get your token — it will be auto-filled below!
         </div>
         <div class="form-card">
-            <h3>🔑 Auth Token (auto-filled after login)</h3>
+            <h3>🔑 Auth Token</h3>
             <div class="form-grid single">
                 <div class="form-group">
-                    <label>Bearer Token</label>
-                    <input type="text" id="doctors-token" placeholder="Paste JWT token or login first">
+                    <label>Bearer Token (auto-filled after login)</label>
+                    <input type="text" id="doctors-token" placeholder="Login first to auto-fill token">
                 </div>
             </div>
-            <button class="submit-btn" onclick="getDoctors()">
-                <span>Send Request</span>
-            </button>
+            <button class="submit-btn" onclick="getDoctors()">Send Request</button>
         </div>
         <div class="response-card">
             <div class="response-header">
@@ -505,8 +438,8 @@
             <h3>📝 Request Body</h3>
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Bearer Token</label>
-                    <input type="text" id="book-token" placeholder="Auto-filled after login">
+                    <label>Bearer Token (auto-filled after login)</label>
+                    <input type="text" id="book-token" placeholder="Login first to auto-fill token">
                 </div>
                 <div class="form-group">
                     <label>Doctor ID</label>
@@ -525,9 +458,7 @@
                     <input type="text" id="book-reason" placeholder="e.g. Fever and headache">
                 </div>
             </div>
-            <button class="submit-btn" onclick="bookAppointment()">
-                <span>Send Request</span>
-            </button>
+            <button class="submit-btn" onclick="bookAppointment()">Send Request</button>
         </div>
         <div class="response-card">
             <div class="response-header">
@@ -548,16 +479,14 @@
             🔐 Login first to view your appointments!
         </div>
         <div class="form-card">
-            <h3>🔑 Auth Token (auto-filled after login)</h3>
+            <h3>🔑 Auth Token</h3>
             <div class="form-grid single">
                 <div class="form-group">
-                    <label>Bearer Token</label>
-                    <input type="text" id="myapp-token" placeholder="Paste JWT token or login first">
+                    <label>Bearer Token (auto-filled after login)</label>
+                    <input type="text" id="myapp-token" placeholder="Login first to auto-fill token">
                 </div>
             </div>
-            <button class="submit-btn" onclick="getMyAppointments()">
-                <span>Send Request</span>
-            </button>
+            <button class="submit-btn" onclick="getMyAppointments()">Send Request</button>
         </div>
         <div class="response-card">
             <div class="response-header">
@@ -571,38 +500,48 @@
 </div>
 
 <script>
-    const BASE_URL = '';  // empty = uses same host (localhost:8080)
+    const BASE_URL = '';
     let savedToken = '';
+
+    function getBtn(name) {
+        return Array.from(document.querySelectorAll('.nav-btn'))
+            .find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(name));
+    }
 
     function showPage(name, btn) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('page-' + name).classList.add('active');
         if (btn) btn.classList.add('active');
-
-        // Auto-fill tokens
         if (savedToken) {
             ['doctors-token', 'book-token', 'myapp-token'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el && !el.value) el.value = savedToken;
+                if (el) el.value = savedToken;
             });
-            const preview = document.getElementById('saved-token-preview');
-            if (preview) preview.textContent = savedToken.substring(0, 30) + '...';
+        }
+    }
+
+    async function safeJson(res) {
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return { message: text, status: res.status };
         }
     }
 
     function setResponse(prefix, data, isError) {
-        const el = document.getElementById(prefix + '-response');
+        document.getElementById(prefix + '-response').textContent = JSON.stringify(data, null, 2);
         const badge = document.getElementById(prefix + '-status');
-        el.textContent = JSON.stringify(data, null, 2);
         badge.textContent = isError ? 'Error' : 'Success';
         badge.className = 'status-badge ' + (isError ? 'status-err' : 'status-ok');
     }
 
     function setLoading(prefix) {
         document.getElementById(prefix + '-response').textContent = '// Sending request...';
-        document.getElementById(prefix + '-status').textContent = 'Loading...';
-        document.getElementById(prefix + '-status').className = 'status-badge status-wait';
+        const badge = document.getElementById(prefix + '-status');
+        badge.textContent = 'Loading...';
+        badge.className = 'status-badge status-wait';
     }
 
     async function registerUser() {
@@ -620,7 +559,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
-            const data = await res.json();
+            const data = await safeJson(res);
             setResponse('reg', data, !res.ok);
             if (res.ok && data.token) {
                 savedToken = data.token;
@@ -642,7 +581,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
-            const data = await res.json();
+            const data = await safeJson(res);
             setResponse('login', data, !res.ok);
             if (res.ok && data.token) {
                 savedToken = data.token;
@@ -664,7 +603,7 @@
             const res = await fetch(BASE_URL + '/api/doctors', {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
-            const data = await res.json();
+            const data = await safeJson(res);
             setResponse('doctors', data, !res.ok);
         } catch (e) {
             setResponse('doctors', { error: e.message }, true);
@@ -689,7 +628,7 @@
                 },
                 body: JSON.stringify(body)
             });
-            const data = await res.json();
+            const data = await safeJson(res);
             setResponse('book', data, !res.ok);
         } catch (e) {
             setResponse('book', { error: e.message }, true);
@@ -703,7 +642,7 @@
             const res = await fetch(BASE_URL + '/api/appointments/my', {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
-            const data = await res.json();
+            const data = await safeJson(res);
             setResponse('myapp', data, !res.ok);
         } catch (e) {
             setResponse('myapp', { error: e.message }, true);
