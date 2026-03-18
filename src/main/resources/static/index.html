@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSlot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0d0d1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0;
+            width: 240px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a0533 0%, #0d0d1a 100%);
+            border-right: 1px solid #2d1b4e;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .logo-text { font-size: 1.3rem; font-weight: 700; }
+        .logo-text span { color: #a78bfa; }
+
+        .nav-section { margin-bottom: 2rem; }
+        .nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #4a3570;
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.1));
+            color: #e2e8f0;
+            border-left: 2px solid #8b5cf6;
+        }
+        .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-left: auto;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 240px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .topbar h1 { font-size: 1.5rem; font-weight: 700; }
+        .topbar h1 span { color: #a78bfa; }
+        .topbar-right { display: flex; align-items: center; gap: 1rem; }
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            color: #10b981;
+        }
+        .version-badge {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a0533, #120828);
+            border: 1px solid #2d1b4e;
+            border-radius: 14px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        .stat-card:nth-child(1)::before { background: #8b5cf6; }
+        .stat-card:nth-child(2)::before { background: #ec4899; }
+        .stat-card:nth-child(3)::before { background: #06b6d4; }
+        .stat-card:nth-child(4)::before { background: #10b981; }
+
+        .stat-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .stat-label { color: #64748b; font-size: 0.85rem; }
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            color: #10b981;
+        }
+
+        /* Middle Row */
+        .middle-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #1a0533, #120828);
+            border: 1px solid #2d1b4e;
+            border-radius: 14px;
+            padding: 1.5rem;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        .card-title { font-size: 1rem; font-weight: 600; }
+        .card-badge {
+            background: rgba(139,92,246,0.2);
+            color: #a78bfa;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        /* API Endpoints */
+        .endpoint-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .endpoint-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.75rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            border: 1px solid #1e1040;
+            font-family: monospace;
+            font-size: 0.82rem;
+            transition: background 0.2s;
+        }
+        .endpoint-item:hover { background: rgba(139,92,246,0.08); }
+        .method {
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            min-width: 48px;
+            text-align: center;
+        }
+        .post { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+        .get { background: rgba(59,130,246,0.2); color: #93c5fd; }
+        .put { background: rgba(245,158,11,0.2); color: #fcd34d; }
+        .delete { background: rgba(239,68,68,0.2); color: #fca5a5; }
+        .ep-path { color: #c4b5fd; flex: 1; }
+        .ep-desc { color: #475569; font-size: 0.75rem; font-family: 'Segoe UI', sans-serif; }
+
+        /* Roles */
+        .roles-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .role-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px solid #1e1040;
+        }
+        .role-icon {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .role-info h4 { font-size: 0.9rem; margin-bottom: 0.2rem; }
+        .role-info p { font-size: 0.75rem; color: #64748b; }
+        .role-count {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            background: rgba(139,92,246,0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+        }
+
+        /* Bottom Row */
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        /* Tech Stack */
+        .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px solid #1e1040;
+            transition: all 0.2s;
+        }
+        .tech-item:hover {
+            border-color: #8b5cf6;
+            background: rgba(139,92,246,0.08);
+        }
+        .tech-icon {
+            width: 32px; height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .tech-name { font-size: 0.85rem; font-weight: 500; }
+        .tech-type { font-size: 0.7rem; color: #64748b; }
+
+        /* Quick Test */
+        .test-section { display: flex; flex-direction: column; gap: 0.75rem; }
+        .test-url {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: #c4b5fd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        .copy-btn {
+            background: rgba(139,92,246,0.2);
+            border: none;
+            color: #a78bfa;
+            padding: 0.25rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(139,92,246,0.4); }
+
+        .cta-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            padding: 0.85rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            transition: opacity 0.2s;
+        }
+        .cta-btn:hover { opacity: 0.85; }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .middle-row { grid-template-columns: 1fr; }
+            .bottom-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🏥</div>
+            <div class="logo-text">Medi<span>Slot</span></div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">Overview</div>
+            <a class="nav-item active" href="#">
+                <span class="icon">📊</span> Dashboard
+                <div class="status-dot"></div>
+            </a>
+            <a class="nav-item" href="#">
+                <span class="icon">🔌</span> API Endpoints
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">Features</div>
+            <a class="nav-item" href="#">
+                <span class="icon">👤</span> Patients
+            </a>
+            <a class="nav-item" href="#">
+                <span class="icon">🩺</span> Doctors
+            </a>
+            <a class="nav-item" href="#">
+                <span class="icon">📅</span> Appointments
+            </a>
+            <a class="nav-item" href="#">
+                <span class="icon">🕐</span> Slot Management
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">Security</div>
+            <a class="nav-item" href="#">
+                <span class="icon">🔐</span> JWT Auth
+            </a>
+            <a class="nav-item" href="#">
+                <span class="icon">🛡️</span> Role Based Access
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div>
+                <h1>MediSlot <span>API Dashboard</span></h1>
+                <p style="color:#64748b; font-size:0.85rem; margin-top:0.25rem;">
+                    Smart Doctor Appointment & Availability Management
+                </p>
+            </div>
+            <div class="topbar-right">
+                <div class="api-status">
+                    <div class="status-dot"></div>
+                    API Live
+                </div>
+                <div class="version-badge">v1.0.0</div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value gradient-text">3</div>
+                <div class="stat-label">User Roles</div>
+                <div class="stat-change">↑ Patient · Doctor · Admin</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔌</div>
+                <div class="stat-value gradient-text">12</div>
+                <div class="stat-label">API Endpoints</div>
+                <div class="stat-change">↑ REST API</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔐</div>
+                <div class="stat-value gradient-text">JWT</div>
+                <div class="stat-label">Authentication</div>
+                <div class="stat-change">↑ Secure & Stateless</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🗄️</div>
+                <div class="stat-value gradient-text">PG</div>
+                <div class="stat-label">PostgreSQL DB</div>
+                <div class="stat-change">↑ Hosted on Render</div>
+            </div>
+        </div>
+
+        <!-- Middle Row -->
+        <div class="middle-row">
+
+            <!-- API Endpoints -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🔌 API Endpoints</div>
+                    <div class="card-badge">12 routes</div>
+                </div>
+                <div class="endpoint-list">
+                    <div class="endpoint-item">
+                        <span class="method post">POST</span>
+                        <span class="ep-path">/api/auth/register</span>
+                        <span class="ep-desc">Register user</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method post">POST</span>
+                        <span class="ep-path">/api/auth/login</span>
+                        <span class="ep-desc">Login & get token</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method get">GET</span>
+                        <span class="ep-path">/api/doctors</span>
+                        <span class="ep-desc">List all doctors</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method post">POST</span>
+                        <span class="ep-path">/api/doctors/register</span>
+                        <span class="ep-desc">Register doctor profile</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method post">POST</span>
+                        <span class="ep-path">/api/appointments/book</span>
+                        <span class="ep-desc">Book appointment</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method get">GET</span>
+                        <span class="ep-path">/api/appointments/my</span>
+                        <span class="ep-desc">My appointments</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method post">POST</span>
+                        <span class="ep-path">/api/slots</span>
+                        <span class="ep-desc">Add slot (Doctor)</span>
+                    </div>
+                    <div class="endpoint-item">
+                        <span class="method delete">DEL</span>
+                        <span class="ep-path">/api/appointments/{id}</span>
+                        <span class="ep-desc">Cancel appointment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roles -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🛡️ User Roles</div>
+                    <div class="card-badge">RBAC</div>
+                </div>
+                <div class="roles-list">
+                    <div class="role-item">
+                        <div class="role-icon" style="background:rgba(139,92,246,0.2)">🧑‍⚕️</div>
+                        <div class="role-info">
+                            <h4>Patient</h4>
+                            <p>Book & manage appointments</p>
+                        </div>
+                        <div class="role-count">PATIENT</div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-icon" style="background:rgba(236,72,153,0.2)">👨‍⚕️</div>
+                        <div class="role-info">
+                            <h4>Doctor</h4>
+                            <p>Manage slots & appointments</p>
+                        </div>
+                        <div class="role-count">DOCTOR</div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-icon" style="background:rgba(6,182,212,0.2)">👑</div>
+                        <div class="role-info">
+                            <h4>Admin</h4>
+                            <p>Full system access</p>
+                        </div>
+                        <div class="role-count">ADMIN</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:1.25rem; padding:1rem; background:rgba(139,92,246,0.08); border-radius:10px; border:1px solid rgba(139,92,246,0.2);">
+                    <p style="font-size:0.8rem; color:#a78bfa; margin-bottom:0.5rem;">🔐 How Auth Works</p>
+                    <p style="font-size:0.75rem; color:#64748b; line-height:1.6;">
+                        Register → Login → Get JWT Token → Add to header as <code style="color:#c4b5fd">Bearer &lt;token&gt;</code> → Access protected routes
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="bottom-row">
+
+            <!-- Tech Stack -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">⚙️ Tech Stack</div>
+                    <div class="card-badge">Spring Boot 3.2</div>
+                </div>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(239,68,68,0.2)">☕</div>
+                        <div>
+                            <div class="tech-name">Java 21</div>
+                            <div class="tech-type">Language</div>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(34,197,94,0.2)">🍃</div>
+                        <div>
+                            <div class="tech-name">Spring Boot</div>
+                            <div class="tech-type">Framework</div>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(59,130,246,0.2)">🐘</div>
+                        <div>
+                            <div class="tech-name">PostgreSQL</div>
+                            <div class="tech-type">Database</div>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(139,92,246,0.2)">🔐</div>
+                        <div>
+                            <div class="tech-name">JWT + Spring Security</div>
+                            <div class="tech-type">Auth</div>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(236,72,153,0.2)">🗂️</div>
+                        <div>
+                            <div class="tech-name">Spring Data JPA</div>
+                            <div class="tech-type">ORM</div>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon" style="background:rgba(245,158,11,0.2)">🐳</div>
+                        <div>
+                            <div class="tech-name">Docker</div>
+                            <div class="tech-type">Container</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Test -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🚀 Quick Test</div>
+                    <div class="card-badge">Try the API</div>
+                </div>
+                <div class="test-section">
+                    <p style="font-size:0.85rem; color:#64748b; margin-bottom:0.5rem;">
+                        Test the API using these sample requests:
+                    </p>
+
+                    <p style="font-size:0.8rem; color:#a78bfa; margin-bottom:0.25rem;">
+                        1️⃣ Register a Patient
+                    </p>
+                    <div class="test-url">
+                        <span>POST /api/auth/register</span>
+                        <button class="copy-btn" onclick="copyText('register')">copy</button>
+                    </div>
+
+                    <p style="font-size:0.8rem; color:#a78bfa; margin-bottom:0.25rem; margin-top:0.5rem;">
+                        2️⃣ Login & Get Token
+                    </p>
+                    <div class="test-url">
+                        <span>POST /api/auth/login</span>
+                        <button class="copy-btn" onclick="copyText('login')">copy</button>
+                    </div>
+
+                    <p style="font-size:0.8rem; color:#a78bfa; margin-bottom:0.25rem; margin-top:0.5rem;">
+                        3️⃣ View All Doctors
+                    </p>
+                    <div class="test-url">
+                        <span>GET /api/doctors</span>
+                        <button class="copy-btn" onclick="copyText('doctors')">copy</button>
+                    </div>
+
+                    <a href="https://github.com/NandithaKale/MediSlot"
+                       target="_blank" class="cta-btn">
+                        ⭐ View on GitHub
+                    </a>
+
+                    <div style="text-align:center; margin-top:0.75rem;">
+                        <p style="font-size:0.75rem; color:#475569;">
+                            Built by D. Nanditha Kale · BMSIT&M · 2024-25
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const snippets = {
+            register: `POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "patient1",
+  "email": "patient@test.com",
+  "password": "123456",
+  "fullName": "Test Patient",
+  "role": "PATIENT"
+}`,
+            login: `POST /api/auth/login
+Content-Type: application/json
+
+{
+  "username": "patient1",
+  "password": "123456"
+}`,
+            doctors: `GET /api/doctors
+Authorization: Bearer <your-jwt-token>`
+        };
+
+        function copyText(key) {
+            navigator.clipboard.writeText(snippets[key]);
+            event.target.textContent = '✓';
+            setTimeout(() => event.target.textContent = 'copy', 1500);
+        }
+    </script>
+</body>
+</html>
